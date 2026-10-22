@@ -1,0 +1,107 @@
+{
+  "_instructions": "Todo o conteúdo do site vem deste arquivo. Substitua cada [[PREENCHER]] e coloque fotos/vídeos em public/media/. image = caminho tipo /media/foto1.jpg ou null (mostra um bloco cinza). video = URL do YouTube/Vimeo/MP4 ou null.",
+
+  "name": "Yasmin",
+  "logo": "YASMIN",
+  "role": "Profissional do Audiovisual",
+  "seoDescription": "Yasmin — profissional do audiovisual: filmmaker, fotógrafa, diretora e criadora de conteúdo.",
+
+  "socials": {
+    "instagram": { "handle": "[[PREENCHER @instagram]]", "url": "#" },
+    "tiktok": { "handle": "[[PREENCHER @tiktok]]", "url": "#" },
+    "youtube": { "handle": "[[PREENCHER canal]]", "url": "#" }
+  },
+
+  "hero": [
+    { "image": null, "alt": "Yasmin — foto destaque 1" },
+    { "image": null, "alt": "Yasmin — foto destaque 2" },
+    { "image": null, "alt": "Yasmin — foto destaque 3" },
+    { "image": null, "alt": "Yasmin — foto destaque 4" },
+    { "image": null, "alt": "Yasmin — foto destaque 5" },
+    { "image": null, "alt": "Yasmin — foto destaque 6" }
+  ],
+
+  "about": {
+    "heading": "Yasmin",
+    "portrait": null,
+    "paragraphs": [
+      "[[PREENCHER]] Apresentação curta da Yasmin: quem é, de onde vem e o que faz no audiovisual.",
+      "[[PREENCHER]] Trajetória: como começou, principais experiências e o que move o trabalho dela."
+    ]
+  },
+
+  "filmmaker": {
+    "title": "Filmmaker",
+    "projects": [
+      { "title": "[[PREENCHER]] Projeto 1", "tag": "Publicidade", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 2", "tag": "Campanha", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 3", "tag": "Publicidade", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 4", "tag": "Campanha", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 5", "tag": "Publicidade", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 6", "tag": "Fashion film", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 7", "tag": "Campanha", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 8", "tag": "Publicidade", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 9", "tag": "Campanha", "image": null, "video": null },
+      { "title": "[[PREENCHER]] Projeto 10", "tag": "Publicidade", "image": null, "video": null }
+    ]
+  },
+
+  "gallery": {
+    "title": "Galeria",
+    "subtitle": "clique para ver os ensaios",
+    "photos": [
+      { "image": null, "alt": "Ensaio 1" },
+      { "image": null, "alt": "Ensaio 2" },
+      { "image": null, "alt": "Ensaio 3" },
+      { "image": null, "alt": "Ensaio 4" },
+      { "image": null, "alt": "Ensaio 5" },
+      { "image": null, "alt": "Ensaio 6" },
+      { "image": null, "alt": "Ensaio 7" },
+      { "image": null, "alt": "Ensaio 8" },
+      { "image": null, "alt": "Ensaio 9" },
+      { "image": null, "alt": "Ensaio 10" },
+      { "image": null, "alt": "Ensaio 11" },
+      { "image": null, "alt": "Ensaio 12" }
+    ]
+  },
+
+  "creator": {
+    "title": "Creator",
+    "tagline": "[[PREENCHER]] artista audiovisual & criadora de conteúdo",
+    "campaignsTitle": "Campanhas",
+    "campaigns": [
+      { "brand": "[[PREENCHER]] Marca 1", "image": null, "url": null },
+      { "brand": "[[PREENCHER]] Marca 2", "image": null, "url": null },
+      { "brand": "[[PREENCHER]] Marca 3", "image": null, "url": null },
+      { "brand": "[[PREENCHER]] Marca 4", "image": null, "url": null },
+      { "brand": "[[PREENCHER]] Marca 5", "image": null, "url": null },
+      { "brand": "[[PREENCHER]] Marca 6", "image": null, "url": null }
+    ]
+  },
+
+  "director": {
+    "title": "Diretora",
+    "subtitle": "direção criativa, direção e edição.",
+    "videos": [
+      { "title": "[[PREENCHER]] Artista — Música 1", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 2", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 3", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 4", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 5", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 6", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 7", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 8", "image": null, "url": null },
+      { "title": "[[PREENCHER]] Artista — Música 9", "image": null, "url": null }
+    ],
+    "reel": null
+  },
+
+  "contact": {
+    "title": "Contato",
+    "items": [
+      { "type": "email", "label": "audiovisual", "value": "[[PREENCHER]]@email.com" },
+      { "type": "email", "label": "creator", "value": "[[PREENCHER]]@email.com" },
+      { "type": "phone", "label": "comercial", "value": "[[PREENCHER]] (00) 00000-0000" }
+    ]
+  }
+}
