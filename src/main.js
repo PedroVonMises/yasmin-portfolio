@@ -73,7 +73,7 @@ const footer = () => `
 // ---------- section builders ----------
 
 const videoCard = (p) => `
-  <figure class="video-card reveal">
+  <figure class="video-card">
     <button class="thumb vertical" data-video="${esc(p.video || '')}" aria-label="Assistir ${esc(p.title)}">
       ${media(p.image, p.title)}
       <span class="play">${icons.play}</span>
@@ -82,7 +82,7 @@ const videoCard = (p) => `
   </figure>`;
 
 const galleryItem = (p) => `
-  <button class="gallery-item reveal" data-image="${esc(p.image || '')}" aria-label="${esc(p.alt)}">${media(p.image, p.alt)}</button>`;
+  <button class="gallery-item" data-image="${esc(p.image || '')}" aria-label="${esc(p.alt)}">${media(p.image, p.alt)}</button>`;
 
 function heroSection() {
   return `
@@ -97,11 +97,11 @@ function aboutSection() {
   return `
   <section id="sobre" class="band band-grey">
     <div class="wrap about">
-      <div class="about-text reveal">
+      <div class="about-text">
         <h2 class="script">${esc(a.heading)}</h2>
         ${a.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('')}
       </div>
-      <div class="about-portrait reveal">${media(a.portrait, `Retrato de ${c.name}`)}</div>
+      <div class="about-portrait">${media(a.portrait, `Retrato de ${c.name}`)}</div>
     </div>
   </section>`;
 }
@@ -112,7 +112,7 @@ function filmmakerSection(limit) {
   return `
   <section id="filmmaker" class="section">
     <div class="wrap">
-      <h2 class="title center reveal">${esc(f.title)}</h2>
+      <h2 class="title center">${esc(f.title)}</h2>
       <div class="grid-5">${items.map(videoCard).join('')}</div>
       ${limit ? '<div class="center"><a class="pill" href="filmmaker.html">ver mais</a></div>' : ''}
     </div>
@@ -125,7 +125,7 @@ function gallerySection(limit) {
     return `
     <section id="galeria" class="section">
       <div class="wrap gallery-preview">
-        <div class="gallery-head reveal">
+        <div class="gallery-head">
           <h2 class="title">${esc(g.title)}</h2>
           <p class="subtitle">${esc(g.subtitle)}</p>
         </div>
@@ -149,7 +149,7 @@ function gallerySection(limit) {
 function creatorSection() {
   const cr = c.creator;
   const profile = (k, label) => `
-    <a class="profile-card reveal" href="${esc(c.socials[k].url)}" target="_blank" rel="noopener">
+    <a class="profile-card" href="${esc(c.socials[k].url)}" target="_blank" rel="noopener">
       <span class="profile-label">${label}</span>
       <span class="profile-body">
         ${media(c.about.portrait, c.name, 'avatar')}
@@ -159,18 +159,18 @@ function creatorSection() {
   return `
   <section id="creator" class="section">
     <div class="wrap">
-      <div class="creator-head reveal">
+      <div class="creator-head">
         <h2 class="title">${esc(cr.title)}</h2>
         <div class="creator-handle"><strong>${esc(c.socials.instagram.handle)}</strong><small>${esc(cr.tagline)}</small></div>
         <div class="creator-icons">${socialIcons(['instagram', 'tiktok', 'youtube'])}</div>
       </div>
       <div class="profiles">${profile('instagram', 'Instagram')}${profile('tiktok', 'TikTok')}</div>
-      <h2 class="title center small reveal">${esc(cr.campaignsTitle)}</h2>
+      <h2 class="title center small">${esc(cr.campaignsTitle)}</h2>
       <div class="grid-3 campaigns">
         ${cr.campaigns
           .map(
             (k) => `
-          <${k.url ? `a href="${esc(k.url)}" target="_blank" rel="noopener"` : 'div'} class="campaign reveal">
+          <${k.url ? `a href="${esc(k.url)}" target="_blank" rel="noopener"` : 'div'} class="campaign">
             ${media(k.image, k.brand)}
             <span class="chip">${esc(k.brand)}</span>
           </${k.url ? 'a' : 'div'}>`,
@@ -186,7 +186,7 @@ function directorSection() {
   return `
   <section id="diretora" class="band band-pink">
     <div class="wrap">
-      <div class="director-head reveal">
+      <div class="director-head">
         <h2 class="title">${esc(d.title)}</h2>
         <p class="subtitle">${esc(d.subtitle)}</p>
       </div>
@@ -194,7 +194,7 @@ function directorSection() {
         ${d.videos
           .map(
             (v) => `
-          <figure class="mv-card reveal">
+          <figure class="mv-card">
             <button class="thumb wide" data-video="${esc(v.url || '')}" aria-label="Assistir ${esc(v.title)}">${media(v.image, v.title)}</button>
             <figcaption><span>${esc(v.title)}</span><button class="watch" data-video="${esc(v.url || '')}">${icons.youtube}assistir agora</button></figcaption>
           </figure>`,
@@ -280,24 +280,51 @@ function wire() {
   });
   document.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
 
-  const track = $('.hero-track');
-  $('.hero-next')?.addEventListener('click', () => {
-    const step = track.firstElementChild.getBoundingClientRect().width + 4;
-    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-    track.scrollTo({ left: atEnd ? 0 : track.scrollLeft + step, behavior: 'smooth' });
-  });
+  heroAutoplay($('.hero-track'));
+}
 
-  const io = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((en) => {
-        if (en.isIntersecting) {
-          en.target.classList.add('in');
-          io.unobserve(en.target);
-        }
-      }),
-    { threshold: 0.12 },
-  );
-  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+// Continuous linear scroll like the original's autoplaying gallery (~one slide per 5.27s).
+// Slides are duplicated so the strip loops seamlessly; pauses on hover or while dragging.
+function heroAutoplay(track) {
+  if (!track) return;
+  track.append(...[...track.children].map((n) => (n = n.cloneNode(true), n.setAttribute('aria-hidden', 'true'), n)));
+  const half = () => track.scrollWidth / 2;
+  const step = () => track.firstElementChild.getBoundingClientRect().width + 4;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pos = 0;
+  let paused = false;
+  let last = performance.now();
+
+  const wrap = () => {
+    if (pos >= half()) pos -= half();
+    track.scrollLeft = pos;
+  };
+  const tick = (now) => {
+    const dt = Math.min(now - last, 1000);
+    last = now;
+    if (!paused && !reduced) {
+      pos += (step() / 5274) * dt;
+      wrap();
+    }
+    requestAnimationFrame(tick);
+  };
+  const pause = () => (paused = true);
+  const resume = () => {
+    pos = track.scrollLeft;
+    paused = false;
+  };
+  track.addEventListener('pointerenter', pause);
+  track.addEventListener('pointerleave', resume);
+  track.addEventListener('touchstart', pause, { passive: true });
+  track.addEventListener('touchend', () => setTimeout(resume, 1500));
+
+  $('.hero-next')?.addEventListener('click', () => {
+    paused = true;
+    if (track.scrollLeft + step() >= half()) track.scrollLeft -= half();
+    track.scrollTo({ left: track.scrollLeft + step(), behavior: 'smooth' });
+    setTimeout(resume, 700);
+  });
+  requestAnimationFrame(tick);
 }
 
 const page = document.body.dataset.page || 'home';
