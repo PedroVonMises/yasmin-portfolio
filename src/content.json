@@ -6,8 +6,8 @@
   "seoDescription": "Yasmin — filmmaker e editora de vídeo: captação e edição de shows, eventos, podcasts e campanhas.",
   "socials": {
     "instagram": {
-      "handle": "[[PREENCHER @instagram]]",
-      "url": "#"
+      "handle": "@buymeaframe",
+      "url": "https://www.instagram.com/buymeaframe"
     },
     "tiktok": {
       "handle": "[[PREENCHER @tiktok]]",
@@ -199,43 +199,34 @@
   "creator": {
     "title": "Creator",
     "tagline": "[[PREENCHER]] artista audiovisual & criadora de conteúdo",
-    "campaignsTitle": "Campanhas",
+    "campaignsTitle": "Campanha Política",
     "campaigns": [
       {
-        "brand": "[[PREENCHER]] Marca 1",
-        "image": null,
-        "url": null
+        "title": "Campanha — nas ruas",
+        "tag": "Campanha política · reels",
+        "category": "Campanha Política",
+        "image": "/media/videos/politica-amaro-1.jpg",
+        "video": "/media/videos/politica-amaro-1.mp4"
       },
       {
-        "brand": "[[PREENCHER]] Marca 2",
-        "image": null,
-        "url": null
+        "title": "Campanha — carreata",
+        "tag": "Campanha política · reels",
+        "category": "Campanha Política",
+        "image": "/media/videos/politica-amaro-2.jpg",
+        "video": "/media/videos/politica-amaro-2.mp4"
       },
       {
-        "brand": "[[PREENCHER]] Marca 3",
-        "image": null,
-        "url": null
-      },
-      {
-        "brand": "[[PREENCHER]] Marca 4",
-        "image": null,
-        "url": null
-      },
-      {
-        "brand": "[[PREENCHER]] Marca 5",
-        "image": null,
-        "url": null
-      },
-      {
-        "brand": "[[PREENCHER]] Marca 6",
-        "image": null,
-        "url": null
+        "title": "Campanha — a cidade",
+        "tag": "Campanha política · reels",
+        "category": "Campanha Política",
+        "image": "/media/videos/politica-amaro-3.jpg",
+        "video": "/media/videos/politica-amaro-3.mp4"
       }
     ]
   },
   "director": {
     "title": "Edição",
-    "subtitle": "cortes, reels e campanhas: ritmo, legenda e motion.",
+    "subtitle": "cortes, reels e podcasts: ritmo, legenda e motion.",
     "projects": [
       {
         "title": "Papo de Boleia",
@@ -285,27 +276,6 @@
         "category": "Podcasts",
         "image": "/media/videos/podcast-reels-chamada.jpg",
         "video": "/media/videos/podcast-reels-chamada.mp4"
-      },
-      {
-        "title": "Campanha — nas ruas",
-        "tag": "Campanha política",
-        "category": "Campanhas",
-        "image": "/media/videos/politica-amaro-1.jpg",
-        "video": "/media/videos/politica-amaro-1.mp4"
-      },
-      {
-        "title": "Campanha — carreata",
-        "tag": "Campanha política",
-        "category": "Campanhas",
-        "image": "/media/videos/politica-amaro-2.jpg",
-        "video": "/media/videos/politica-amaro-2.mp4"
-      },
-      {
-        "title": "Campanha — a cidade",
-        "tag": "Campanha política",
-        "category": "Campanhas",
-        "image": "/media/videos/politica-amaro-3.jpg",
-        "video": "/media/videos/politica-amaro-3.mp4"
       }
     ],
     "reel": "/media/videos/trust.mp4",

@@ -137,7 +137,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .watch { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-cond); font-size: 15px; letter-spacing: -0.05em; text-transform: uppercase; white-space: nowrap; }
 .watch svg { width: 18px; height: 18px; color: #e03939; }
 .reel { line-height: 0; }
-.reel video, .reel-media { width: 100%; aspect-ratio: 1905 / 595; object-fit: cover; }
+.reel video, .reel-media { width: 100%; aspect-ratio: 16 / 9; max-height: 100vh; object-fit: cover; object-position: center 35%; background: #000; }
 
 /* ---------- contact ---------- */
 .contact { min-height: 60vh; padding-top: 90px; }
@@ -168,7 +168,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @media (max-width: 1000px) {
   .grid-5 { grid-template-columns: repeat(3, 1fr); }
   .hero-slide { flex-basis: calc((100% - 8px) / 2.5); }
-  .reel video, .reel-media { aspect-ratio: 16 / 7; }
   .gallery-preview { grid-template-columns: 1fr; }
   .about-portrait { width: min(350px, 100%); }
   .gallery-head { text-align: center; }
@@ -196,7 +195,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .hero-slide { flex-basis: 78%; }
   .section { padding: 50px 0; }
   .director-head .subtitle { font-size: 17px; }
-  .reel video, .reel-media { aspect-ratio: 4 / 3; }
 }
 
 /* ---------- video previews, filters, reel ---------- */
@@ -216,3 +214,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .reel-cta:hover { background: rgba(0, 0, 0, .7); }
 .reel-cta svg { width: 28px; height: 28px; }
 .lightbox video { max-height: 88vh; width: auto; }
+.campaigns { width: min(760px, 100%); gap: 22px 24px; }
+.campaigns .video-card strong { font-size: 13px; }
+@media (max-width: 520px) { .campaigns { grid-template-columns: repeat(3, 1fr); gap: 16px 8px; } .reel-cta { bottom: 12px; font-size: 13px; white-space: nowrap; padding: 7px 14px 7px 8px; } .reel-cta svg { width: 22px; height: 22px; } }

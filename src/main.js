@@ -180,18 +180,8 @@ function creatorSection() {
         <div class="creator-icons">${socialIcons(['instagram', 'tiktok', 'youtube'])}</div>
       </div>
       <div class="profiles">${profile('instagram', 'Instagram')}${profile('tiktok', 'TikTok')}</div>
-      <h2 class="title center small">${esc(cr.campaignsTitle)}</h2>
-      <div class="grid-3 campaigns">
-        ${cr.campaigns
-          .map(
-            (k) => `
-          <${k.url ? `a href="${esc(k.url)}" target="_blank" rel="noopener"` : 'div'} class="campaign">
-            ${media(k.image, k.brand)}
-            <span class="chip">${esc(k.brand)}</span>
-          </${k.url ? 'a' : 'div'}>`,
-          )
-          .join('')}
-      </div>
+      <h2 id="campanha-politica" class="title center small">${esc(cr.campaignsTitle)}</h2>
+      <div class="grid-3 campaigns">${cr.campaigns.map(videoCard).join('')}</div>
     </div>
   </section>`;
 }
@@ -208,7 +198,13 @@ function editSection(limit = 5) {
       <div class="grid-5">${d.projects.slice(0, limit).map(videoCard).join('')}</div>
       <div class="center"><a class="pill" href="filmmaker.html">ver todos</a></div>
     </div>
-  </section>
+  </section>`;
+}
+
+// Full-width Tr/st reel, shown at the very end of the home page.
+function reelSection() {
+  const d = c.director;
+  return `
   <section class="reel">
     ${
       d.reel
@@ -241,7 +237,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + gallerySection(8) + creatorSection(),
+  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + gallerySection(8) + creatorSection() + reelSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),
