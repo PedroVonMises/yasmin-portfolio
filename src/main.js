@@ -53,7 +53,7 @@ function header() {
           <a href="${home}#filmmaker">filmmaker</a>
           <a href="${home}#creator">creator</a>
           <a href="${home}#galeria">fotógrafa</a>
-          <a href="${home}#diretora">diretora</a>
+          <a href="${home}#edicao">edição</a>
         </div>
         <div class="nav-side">
           <a href="${home}#sobre">sobre</a>
@@ -72,10 +72,13 @@ const footer = () => `
 
 // ---------- section builders ----------
 
+// Vertical card. Local .mp4 files get a muted preview that plays on hover.
+const isFile = (u) => /\.(mp4|webm|mov)$/i.test(u || '');
 const videoCard = (p) => `
-  <figure class="video-card">
+  <figure class="video-card" data-category="${esc(p.category || '')}">
     <button class="thumb vertical" data-video="${esc(p.video || '')}" aria-label="Assistir ${esc(p.title)}">
       ${media(p.image, p.title)}
+      ${isFile(p.video) ? `<video class="preview" data-src="${esc(p.video)}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ''}
       <span class="play">${icons.play}</span>
     </button>
     <figcaption><strong>${esc(p.title)}</strong><small>${esc(p.tag)}</small></figcaption>
@@ -106,13 +109,25 @@ function aboutSection() {
   </section>`;
 }
 
+// Category chips that filter the cards below them (full pages only).
+function filters(items) {
+  const cats = [...new Set(items.map((p) => p.category).filter(Boolean))];
+  if (cats.length < 2) return '';
+  return `<div class="filters" role="group" aria-label="Filtrar por categoria">
+    ${['Todos', ...cats].map((k, i) => `<button class="filter${i ? '' : ' active'}" data-filter="${i ? esc(k) : ''}" aria-pressed="${!i}">${esc(k)}</button>`).join('')}
+  </div>`;
+}
+
 function filmmakerSection(limit) {
   const f = c.filmmaker;
-  const items = limit ? f.projects.slice(0, limit) : f.projects;
+  const all = limit ? [] : [...f.projects, ...c.director.projects];
+  const items = limit ? f.projects.slice(0, limit) : all;
   return `
   <section id="filmmaker" class="section">
     <div class="wrap">
       <h2 class="title center">${esc(f.title)}</h2>
+      ${f.subtitle ? `<p class="subtitle center lead">${esc(f.subtitle)}</p>` : ''}
+      ${limit ? '' : filters(items)}
       <div class="grid-5">${items.map(videoCard).join('')}</div>
       ${limit ? '<div class="center"><a class="pill" href="filmmaker.html">ver mais</a></div>' : ''}
     </div>
@@ -181,32 +196,24 @@ function creatorSection() {
   </section>`;
 }
 
-function directorSection() {
+function editSection(limit = 5) {
   const d = c.director;
   return `
-  <section id="diretora" class="band band-pink">
+  <section id="edicao" class="band band-pink">
     <div class="wrap">
       <div class="director-head">
         <h2 class="title">${esc(d.title)}</h2>
         <p class="subtitle">${esc(d.subtitle)}</p>
       </div>
-      <div class="grid-3">
-        ${d.videos
-          .map(
-            (v) => `
-          <figure class="mv-card">
-            <button class="thumb wide" data-video="${esc(v.url || '')}" aria-label="Assistir ${esc(v.title)}">${media(v.image, v.title)}</button>
-            <figcaption><span>${esc(v.title)}</span><button class="watch" data-video="${esc(v.url || '')}">${icons.youtube}assistir agora</button></figcaption>
-          </figure>`,
-          )
-          .join('')}
-      </div>
+      <div class="grid-5">${d.projects.slice(0, limit).map(videoCard).join('')}</div>
+      <div class="center"><a class="pill" href="filmmaker.html">ver todos</a></div>
     </div>
   </section>
   <section class="reel">
     ${
       d.reel
-        ? `<video src="${esc(d.reel)}" autoplay muted loop playsinline></video>`
+        ? `<video src="${esc(d.reelLoop || d.reel)}" ${d.reelPoster ? `poster="${esc(d.reelPoster)}"` : ''} autoplay muted loop playsinline preload="metadata"></video>
+           <button class="reel-cta" data-video="${esc(d.reel)}">${icons.play}<span>${esc(d.reelTitle || 'assistir reel')} · com som</span></button>`
         : media(null, `Reel — ${c.name}`, 'reel-media')
     }
   </section>`;
@@ -234,7 +241,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + filmmakerSection(5) + gallerySection(8) + creatorSection() + directorSection(),
+  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + gallerySection(8) + creatorSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),
@@ -281,6 +288,40 @@ function wire() {
   document.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
 
   heroAutoplay($('.hero-track'));
+  hoverPreviews();
+  document.querySelectorAll('.filters').forEach(wireFilters);
+}
+
+// Play a muted preview while a card is hovered (desktop only); the file loads on first hover.
+function hoverPreviews() {
+  if (!matchMedia('(hover: hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.thumb .preview').forEach((v) => {
+    const thumb = v.parentElement;
+    thumb.addEventListener('pointerenter', () => {
+      if (!v.src) v.src = v.dataset.src;
+      v.currentTime = 0;
+      v.play().then(() => thumb.classList.add('previewing')).catch(() => {});
+    });
+    thumb.addEventListener('pointerleave', () => {
+      thumb.classList.remove('previewing');
+      v.pause();
+    });
+  });
+}
+
+function wireFilters(group) {
+  const grid = group.nextElementSibling;
+  group.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-filter]');
+    if (!btn) return;
+    group.querySelectorAll('.filter').forEach((b) => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+    grid.querySelectorAll('.video-card').forEach((card) => {
+      card.hidden = !!btn.dataset.filter && card.dataset.category !== btn.dataset.filter;
+    });
+  });
 }
 
 // Continuous linear scroll like the original's autoplaying gallery (~one slide per 5.27s).
