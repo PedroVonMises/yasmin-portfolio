@@ -52,7 +52,7 @@ function header() {
         <div class="nav-main">
           <a href="${home}#filmmaker">filmmaker</a>
           <a href="${home}#creator">creator</a>
-          <a href="${home}#galeria">fotógrafa</a>
+          <a href="${home}#podcasts">podcasts</a>
           <a href="${home}#edicao">edição</a>
         </div>
         <div class="nav-side">
@@ -215,6 +215,38 @@ function editSection(limit = 5) {
   </section>`;
 }
 
+// Podcasts, laid out like the reference's "Diretora" block: 16:9 YouTube thumbnails with the
+// episode title and an "assistir agora" link. Each card opens the episode inside the playlist.
+function podcastSection() {
+  const p = c.podcasts;
+  if (!p?.episodes?.length) return '';
+  const watch = (e) => `https://www.youtube.com/watch?v=${encodeURIComponent(e.id)}&list=${encodeURIComponent(p.playlist)}`;
+  return `
+  <section id="podcasts" class="band band-pink podcasts">
+    <div class="wrap">
+      <div class="director-head">
+        <h2 class="title">${esc(p.title)}</h2>
+        <p class="subtitle">${esc(p.subtitle)}</p>
+      </div>
+      <div class="grid-3">
+        ${p.episodes
+          .map(
+            (e) => `
+          <figure class="mv-card">
+            <a class="thumb wide" href="${esc(watch(e))}" target="_blank" rel="noopener" aria-label="Assistir ${esc(e.title)} no YouTube">
+              <img class="media" src="https://i.ytimg.com/vi/${esc(e.id)}/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+              <span class="play">${icons.play}</span>
+            </a>
+            <figcaption><span>${esc(e.title)}</span><a class="watch" href="${esc(watch(e))}" target="_blank" rel="noopener">${icons.youtube}assistir agora</a></figcaption>
+          </figure>`,
+          )
+          .join('')}
+      </div>
+      <div class="center"><a class="pill" href="https://www.youtube.com/playlist?list=${esc(p.playlist)}" target="_blank" rel="noopener">ver playlist completa</a></div>
+    </div>
+  </section>`;
+}
+
 // Full-width Tr/st reel, shown at the very end of the home page.
 function reelSection() {
   const d = c.director;
@@ -251,7 +283,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + campaignSection() + filmmakerSection(5) + editSection() + gallerySection(8) + creatorSection() + reelSection(),
+  home: () => heroSection() + aboutSection() + campaignSection() + filmmakerSection(5) + editSection() + podcastSection() + creatorSection() + reelSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),

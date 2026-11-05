@@ -281,6 +281,12 @@
     "reelTitle": "Tr/st — ao vivo",
     "reelLoop": "/media/videos/trust-loop.mp4"
   },
+  "podcasts": {
+    "title": "Podcasts",
+    "subtitle": "Podcast Viva Bem na Estrada — captação e edição.",
+    "playlist": "PLLiCHynnSq9tfLI5kMGaaRpZ_bGZoBSfY",
+    "episodes": []
+  },
   "contact": {
     "title": "Contato",
     "items": [
