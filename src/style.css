@@ -57,8 +57,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- hero ---------- */
 .hero { position: relative; padding-top: 6px; }
-.hero-track { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-.hero-track::-webkit-scrollbar { display: none; }
+.hero-track { overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.hero-track:active { cursor: grabbing; }
+.hero-rail { display: flex; gap: 4px; will-change: transform; }
+.hero-slide img, .hero-slide video { pointer-events: none; -webkit-user-drag: none; }
 .hero-slide { flex: 0 0 calc((100% - 12px) / 4.03); aspect-ratio: 321 / 588; overflow: hidden; }
 .hero-next { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #fff; mix-blend-mode: difference; }
 .hero-next svg { width: 40px; height: 40px; }

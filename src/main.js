@@ -96,8 +96,8 @@ const heroMedia = (h) =>
 function heroSection() {
   return `
   <section class="hero wrap">
-    <div class="hero-track">${c.hero.map((h) => `<div class="hero-slide">${heroMedia(h)}</div>`).join('')}</div>
-    <button class="hero-next" aria-label="Próxima foto">${icons.arrow}</button>
+    <div class="hero-track" aria-roledescription="carrossel" aria-label="Destaques"><div class="hero-rail">${c.hero.map((h) => `<div class="hero-slide">${heroMedia(h)}</div>`).join('')}</div></div>
+    <button class="hero-next" aria-label="Próximo destaque">${icons.arrow}</button>
   </section>`;
 }
 
@@ -334,48 +334,89 @@ function wireFilters(group) {
   });
 }
 
-// Continuous linear scroll like the original's autoplaying gallery (~one slide per 5.27s).
-// Slides are duplicated so the strip loops seamlessly; pauses on hover or while dragging.
+// Slider like the reference: advances one slide at a time on a timer with an eased glide,
+// loops forever (the slide set is cloned on both sides), and can be swiped or dragged.
+// It keeps running under the mouse; it only waits while a finger or the mouse is dragging it.
+const HERO_INTERVAL = 4000;
+const HERO_GLIDE = 'transform 900ms cubic-bezier(0.65, 0, 0.35, 1)';
+
 function heroAutoplay(track) {
-  if (!track) return;
-  track.append(...[...track.children].map((n) => (n = n.cloneNode(true), n.setAttribute('aria-hidden', 'true'), n)));
-  const half = () => track.scrollWidth / 2;
-  const step = () => track.firstElementChild.getBoundingClientRect().width + 4;
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let pos = 0;
-  let paused = false;
-  let last = performance.now();
-
-  const wrap = () => {
-    if (pos >= half()) pos -= half();
-    track.scrollLeft = pos;
-  };
-  const tick = (now) => {
-    const dt = Math.min(now - last, 1000);
-    last = now;
-    if (!paused && !reduced) {
-      pos += (step() / 5274) * dt;
-      wrap();
-    }
-    requestAnimationFrame(tick);
-  };
-  const pause = () => (paused = true);
-  const resume = () => {
-    pos = track.scrollLeft;
-    paused = false;
-  };
-  track.addEventListener('pointerenter', pause);
-  track.addEventListener('pointerleave', resume);
-  track.addEventListener('touchstart', pause, { passive: true });
-  track.addEventListener('touchend', () => setTimeout(resume, 1500));
-
-  $('.hero-next')?.addEventListener('click', () => {
-    paused = true;
-    if (track.scrollLeft + step() >= half()) track.scrollLeft -= half();
-    track.scrollTo({ left: track.scrollLeft + step(), behavior: 'smooth' });
-    setTimeout(resume, 700);
+  const rail = track?.querySelector('.hero-rail');
+  if (!rail) return;
+  const n = rail.children.length;
+  const clone = () => [...rail.children].slice(0, n).map((el) => {
+    const c2 = el.cloneNode(true);
+    c2.setAttribute('aria-hidden', 'true');
+    return c2;
   });
-  requestAnimationFrame(tick);
+  rail.append(...clone());
+  rail.prepend(...clone());
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const step = () => rail.children[0].getBoundingClientRect().width + parseFloat(getComputedStyle(rail).columnGap || 0);
+  let index = n;
+  let timer = 0;
+  let drag = null;
+
+  const place = (animate, offset = 0) => {
+    rail.style.transition = animate ? HERO_GLIDE : 'none';
+    rail.style.transform = `translate3d(${-index * step() + offset}px, 0, 0)`;
+  };
+  const go = (to) => {
+    index = to;
+    place(true);
+    schedule();
+  };
+  // Once a glide ends inside a cloned set, jump back to the matching original without animation.
+  rail.addEventListener('transitionend', (e) => {
+    if (e.target !== rail) return;
+    if (index >= 2 * n) index -= n;
+    else if (index < n) index += n;
+    else return;
+    place(false);
+  });
+  const schedule = () => {
+    clearTimeout(timer);
+    if (!reduced && !drag && !document.hidden) timer = setTimeout(() => go(index + 1), HERO_INTERVAL);
+  };
+
+  track.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    clearTimeout(timer);
+    // Freeze wherever a running glide currently is, so grabbing it mid-move doesn't jump.
+    const x = new DOMMatrix(getComputedStyle(rail).transform).m41;
+    index = -x / step();
+    place(false);
+    drag = { x0: e.clientX, y0: e.clientY, dx: 0, id: e.pointerId, moved: false };
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag.dx = e.clientX - drag.x0;
+    if (!drag.moved && Math.abs(drag.dx) > 6 && Math.abs(drag.dx) > Math.abs(e.clientY - drag.y0)) {
+      drag.moved = true;
+      track.setPointerCapture(e.pointerId);
+    }
+    if (drag.moved) place(false, drag.dx);
+  });
+  const release = (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const { dx, moved } = drag;
+    drag = null;
+    let to = index - dx / step();
+    // A short flick still moves a whole slide in the flick's direction.
+    to = Math.abs(dx) > 40 ? (dx < 0 ? Math.ceil(to) : Math.floor(to)) : Math.round(to);
+    if (moved) track.addEventListener('click', (ev) => ev.stopPropagation(), { capture: true, once: true });
+    go(to);
+  };
+  track.addEventListener('pointerup', release);
+  track.addEventListener('pointercancel', release);
+  track.addEventListener('dragstart', (e) => e.preventDefault());
+
+  $('.hero-next')?.addEventListener('click', () => go(Math.round(index) + 1));
+  document.addEventListener('visibilitychange', schedule);
+  addEventListener('resize', () => place(false));
+  place(false);
+  schedule();
 }
 
 const page = document.body.dataset.page || 'home';
