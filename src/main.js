@@ -337,6 +337,8 @@ function wireFilters(group) {
 // Slider like the reference: advances one slide at a time on a timer with an eased glide,
 // loops forever (the slide set is cloned on both sides), and can be swiped or dragged.
 // It keeps running under the mouse; it only waits while a finger or the mouse is dragging it.
+// It also runs when the OS asks for reduced motion (Windows "Animation effects" off reports
+// that), because the site owner wants the highlights to always advance.
 const HERO_INTERVAL = 4000;
 const HERO_GLIDE = 'transform 900ms cubic-bezier(0.65, 0, 0.35, 1)';
 
@@ -352,7 +354,6 @@ function heroAutoplay(track) {
   rail.append(...clone());
   rail.prepend(...clone());
 
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const step = () => rail.children[0].getBoundingClientRect().width + parseFloat(getComputedStyle(rail).columnGap || 0);
   let index = n;
   let timer = 0;
@@ -377,7 +378,7 @@ function heroAutoplay(track) {
   });
   const schedule = () => {
     clearTimeout(timer);
-    if (!reduced && !drag && !document.hidden) timer = setTimeout(() => go(index + 1), HERO_INTERVAL);
+    if (!drag && !document.hidden) timer = setTimeout(() => go(index + 1), HERO_INTERVAL);
   };
 
   track.addEventListener('pointerdown', (e) => {
