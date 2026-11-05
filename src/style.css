@@ -57,8 +57,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- hero ---------- */
 .hero { position: relative; padding-top: 6px; }
-.hero-track { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-.hero-track::-webkit-scrollbar { display: none; }
+.hero-track { overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.hero-track:active { cursor: grabbing; }
+.hero-rail { display: flex; gap: 4px; will-change: transform; }
+.hero-slide img, .hero-slide video { pointer-events: none; -webkit-user-drag: none; }
 .hero-slide { flex: 0 0 calc((100% - 12px) / 4.03); aspect-ratio: 321 / 588; overflow: hidden; }
 .hero-next { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #fff; mix-blend-mode: difference; }
 .hero-next svg { width: 40px; height: 40px; }
@@ -228,3 +230,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .nav-social { align-items: center; margin-left: 6px; }
 .nav-social .social { display: inline-flex; align-items: center; }
 .nav-social svg { width: 24px; height: 24px; }
+
+/* ---------- podcasts ---------- */
+/* Same grid as the reference's "Diretora" block, but an incomplete last row is centered. */
+.podcasts .grid-3 { display: flex; flex-wrap: wrap; justify-content: center; }
+.podcasts .mv-card { flex: 0 0 calc((100% - 82px) / 3); }
+.podcasts .thumb .media { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 520px) { .podcasts .mv-card { flex-basis: 100%; } }
