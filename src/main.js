@@ -33,7 +33,7 @@ const icons = {
   arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
 };
 
-const socialIcons = (keys = ['instagram', 'tiktok']) =>
+const socialIcons = (keys = ['instagram']) =>
   keys
     .filter((k) => c.socials[k])
     .map((k) => `<a class="social" href="${esc(c.socials[k].url)}" target="_blank" rel="noopener" aria-label="${k}">${icons[k]}</a>`)
@@ -87,10 +87,16 @@ const videoCard = (p) => `
 const galleryItem = (p) => `
   <button class="gallery-item" data-image="${esc(p.image || '')}" aria-label="${esc(p.alt)}">${media(p.image, p.alt)}</button>`;
 
+// Hero slide: a looping muted video when one is set, otherwise the photo.
+const heroMedia = (h) =>
+  h.video
+    ? `<video class="media" src="${esc(h.video)}" ${h.image ? `poster="${esc(h.image)}"` : ''} autoplay muted loop playsinline preload="metadata" aria-label="${esc(h.alt)}"></video>`
+    : media(h.image, h.alt);
+
 function heroSection() {
   return `
   <section class="hero wrap">
-    <div class="hero-track">${c.hero.map((h) => `<div class="hero-slide">${media(h.image, h.alt)}</div>`).join('')}</div>
+    <div class="hero-track">${c.hero.map((h) => `<div class="hero-slide">${heroMedia(h)}</div>`).join('')}</div>
     <button class="hero-next" aria-label="Próxima foto">${icons.arrow}</button>
   </section>`;
 }
@@ -167,7 +173,7 @@ function creatorSection() {
     <a class="profile-card" href="${esc(c.socials[k].url)}" target="_blank" rel="noopener">
       <span class="profile-label">${label}</span>
       <span class="profile-body">
-        ${media(c.about.portrait, c.name, 'avatar')}
+        ${media(c.creator.avatar || c.about.portrait, c.name, 'avatar')}
         <span><strong>${esc(c.socials[k].handle)}</strong><small>${esc(c.name)}</small></span>
       </span>
     </a>`;
@@ -177,10 +183,18 @@ function creatorSection() {
       <div class="creator-head">
         <h2 class="title">${esc(cr.title)}</h2>
         <div class="creator-handle"><strong>${esc(c.socials.instagram.handle)}</strong><small>${esc(cr.tagline)}</small></div>
-        <div class="creator-icons">${socialIcons(['instagram', 'tiktok', 'youtube'])}</div>
       </div>
-      <div class="profiles">${profile('instagram', 'Instagram')}${profile('tiktok', 'TikTok')}</div>
-      <h2 id="campanha-politica" class="title center small">${esc(cr.campaignsTitle)}</h2>
+      <div class="profiles">${profile('instagram', 'Instagram')}</div>
+    </div>
+  </section>`;
+}
+
+function campaignSection() {
+  const cr = c.creator;
+  return `
+  <section id="campanha-politica" class="section campaign-section">
+    <div class="wrap">
+      <h2 class="title center small">${esc(cr.campaignsTitle)}</h2>
       <div class="grid-3 campaigns">${cr.campaigns.map(videoCard).join('')}</div>
     </div>
   </section>`;
@@ -229,7 +243,7 @@ function contactSection() {
           })
           .join('')}
       </ul>
-      <div class="contact-social">${socialIcons(['instagram', 'tiktok', 'youtube'])}</div>
+      <div class="contact-social">${socialIcons(['instagram'])}</div>
     </div>
   </section>`;
 }
@@ -237,7 +251,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + gallerySection(8) + creatorSection() + reelSection(),
+  home: () => heroSection() + aboutSection() + campaignSection() + filmmakerSection(5) + editSection() + gallerySection(8) + creatorSection() + reelSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),

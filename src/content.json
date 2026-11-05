@@ -9,10 +9,6 @@
       "handle": "@buymeaframe",
       "url": "https://www.instagram.com/buymeaframe"
     },
-    "tiktok": {
-      "handle": "[[PREENCHER @tiktok]]",
-      "url": "#"
-    },
     "youtube": {
       "handle": "[[PREENCHER canal]]",
       "url": "#"
@@ -20,33 +16,34 @@
   },
   "hero": [
     {
-      "image": null,
-      "alt": "Yasmin — foto destaque 1"
+      "image": "/media/fotos/destaque01.jpg",
+      "video": "/media/fotos/destaque01.mp4",
+      "alt": "Destaque em vídeo — mar e pedras"
     },
     {
-      "image": null,
-      "alt": "Yasmin — foto destaque 2"
+      "image": "/media/fotos/destaque02.jpg",
+      "alt": "Destaque — navio no mar"
     },
     {
-      "image": null,
-      "alt": "Yasmin — foto destaque 3"
+      "image": "/media/fotos/destaque03.jpg",
+      "alt": "Destaque — sala com sofá vermelho"
     },
     {
-      "image": null,
-      "alt": "Yasmin — foto destaque 4"
+      "image": "/media/fotos/destaque04.jpg",
+      "alt": "Destaque — instalação com neon e telas"
     },
     {
-      "image": null,
-      "alt": "Yasmin — foto destaque 5"
+      "image": "/media/fotos/destaque05.jpg",
+      "alt": "Destaque — postes de luz em preto e branco"
     },
     {
-      "image": null,
-      "alt": "Yasmin — foto destaque 6"
+      "image": "/media/fotos/destaque06.jpg",
+      "alt": "Destaque — escada em luz vermelha"
     }
   ],
   "about": {
     "heading": "Yasmin",
-    "portrait": null,
+    "portrait": "/media/fotos/retrato.jpg",
     "paragraphs": [
       "[[PREENCHER]] Apresentação curta da Yasmin: quem é, de onde vem e o que faz no audiovisual.",
       "[[PREENCHER]] Trajetória: como começou, principais experiências e o que move o trabalho dela."
@@ -222,7 +219,8 @@
         "image": "/media/videos/politica-amaro-3.jpg",
         "video": "/media/videos/politica-amaro-3.mp4"
       }
-    ]
+    ],
+    "avatar": "/media/fotos/avatar.jpg"
   },
   "director": {
     "title": "Edição",
