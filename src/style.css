@@ -217,3 +217,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .campaigns { width: min(760px, 100%); gap: 22px 24px; }
 .campaigns .video-card strong { font-size: 13px; }
 @media (max-width: 520px) { .campaigns { grid-template-columns: repeat(3, 1fr); gap: 16px 8px; } .reel-cta { bottom: 12px; font-size: 13px; white-space: nowrap; padding: 7px 14px 7px 8px; } .reel-cta svg { width: 22px; height: 22px; } }
+
+/* ---------- destaques, retrato, creator ---------- */
+.hero-slide .media { width: 100%; height: 100%; object-fit: cover; }
+.about-portrait .media { width: 100%; height: 100%; object-fit: cover; }
+.avatar { object-fit: cover; }
+.creator-head { grid-template-columns: auto 1fr; }
+.profiles { grid-template-columns: 1fr; }
+.campaign-section { padding-top: 70px; }
+.nav-social { align-items: center; margin-left: 6px; }
+.nav-social .social { display: inline-flex; align-items: center; }
+.nav-social svg { width: 24px; height: 24px; }
