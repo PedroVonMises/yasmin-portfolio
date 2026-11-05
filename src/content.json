@@ -283,9 +283,30 @@
   },
   "podcasts": {
     "title": "Podcasts",
-    "subtitle": "Podcast Viva Bem na Estrada — captação e edição.",
+    "subtitle": "Viva Bem na Estrada — episódios completos no YouTube.",
     "playlist": "PLLiCHynnSq9tfLI5kMGaaRpZ_bGZoBSfY",
-    "episodes": []
+    "episodes": [
+      {
+        "id": "YWbSzdBkcqI",
+        "title": "EP #01 — Estrada da Virada: ressocialização e respeito"
+      },
+      {
+        "id": "msE87iOqFzE",
+        "title": "EP #02 — Vai faltar caminhoneiro! Quem vai ganhar dinheiro no \"apagão\" das estradas?"
+      },
+      {
+        "id": "bU97TQOubDo",
+        "title": "EP #03 — É possível falar com Deus a 80 km/h?"
+      },
+      {
+        "id": "jvepDQcTwQs",
+        "title": "EP #04 — Caminhoneiro x influencer"
+      },
+      {
+        "id": "4pt8yjBgnyk",
+        "title": "Papo de Boleia #01 — QRA Jaiminho e Marrento revelam os maiores perrengues na rodovia!"
+      }
+    ]
   },
   "contact": {
     "title": "Contato",

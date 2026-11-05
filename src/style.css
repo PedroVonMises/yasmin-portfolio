@@ -230,3 +230,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .nav-social { align-items: center; margin-left: 6px; }
 .nav-social .social { display: inline-flex; align-items: center; }
 .nav-social svg { width: 24px; height: 24px; }
+
+/* ---------- podcasts ---------- */
+/* Same grid as the reference's "Diretora" block, but an incomplete last row is centered. */
+.podcasts .grid-3 { display: flex; flex-wrap: wrap; justify-content: center; }
+.podcasts .mv-card { flex: 0 0 calc((100% - 82px) / 3); }
+.podcasts .thumb .media { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 520px) { .podcasts .mv-card { flex-basis: 100%; } }
