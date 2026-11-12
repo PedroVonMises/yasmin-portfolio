@@ -91,7 +91,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .thumb { position: relative; display: block; width: 100%; overflow: hidden; }
 .thumb.vertical { aspect-ratio: 201 / 357; }
 .thumb.wide { aspect-ratio: 364 / 245; }
-.thumb:hover .media, .gallery-item:hover .media, .campaign:hover .media { transform: scale(1.08); }
+.thumb:hover .media, .gallery-item:hover .media { transform: scale(1.08); }
 .play { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
 .play svg { width: 34px; height: 34px; transition: opacity .2s; }
 .thumb:hover .play svg { opacity: .8; }
@@ -126,8 +126,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .profile-body strong { display: block; font-size: 14px; }
 .profile-body small { font-size: 11px; color: var(--muted); }
 .avatar { width: 96px; height: 96px; border-radius: 50%; flex: none; overflow: hidden; padding: 4px; font-size: 9px; }
-.campaigns { width: min(861px, 100%); gap: 26px 30px; }
-.campaign { position: relative; display: block; aspect-ratio: 267 / 300; overflow: hidden; }
 .chip { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); background: var(--chip); padding: 4px 18px; font-family: var(--f-tag); font-weight: 500; font-size: 17px; white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis; }
 
 /* ---------- director ---------- */
@@ -216,9 +214,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .reel-cta:hover { background: rgba(0, 0, 0, .7); }
 .reel-cta svg { width: 28px; height: 28px; }
 .lightbox video { max-height: 88vh; width: auto; }
-.campaigns { width: min(760px, 100%); gap: 22px 24px; }
-.campaigns .video-card strong { font-size: 13px; }
-@media (max-width: 520px) { .campaigns { grid-template-columns: repeat(3, 1fr); gap: 16px 8px; } .reel-cta { bottom: 12px; font-size: 13px; white-space: nowrap; padding: 7px 14px 7px 8px; } .reel-cta svg { width: 22px; height: 22px; } }
+@media (max-width: 520px) { .reel-cta { bottom: 12px; font-size: 13px; white-space: nowrap; padding: 7px 14px 7px 8px; } .reel-cta svg { width: 22px; height: 22px; } }
 
 /* ---------- destaques, retrato, creator ---------- */
 .hero-slide .media { width: 100%; height: 100%; object-fit: cover; }
@@ -226,7 +222,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .avatar { object-fit: cover; }
 .creator-head { grid-template-columns: auto 1fr; }
 .profiles { grid-template-columns: 1fr; }
-.campaign-section { padding-top: 70px; }
 .nav-social { align-items: center; margin-left: 6px; }
 .nav-social .social { display: inline-flex; align-items: center; }
 .nav-social svg { width: 24px; height: 24px; }

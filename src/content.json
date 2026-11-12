@@ -199,30 +199,6 @@
   "creator": {
     "title": "Creator",
     "tagline": "artista audiovisual & storymaker",
-    "campaignsTitle": "Campanha Política",
-    "campaigns": [
-      {
-        "title": "Campanha — nas ruas",
-        "tag": "Campanha política · reels",
-        "category": "Campanha Política",
-        "image": "/media/videos/politica-amaro-1.jpg",
-        "video": "/media/videos/politica-amaro-1.mp4"
-      },
-      {
-        "title": "Campanha — carreata",
-        "tag": "Campanha política · reels",
-        "category": "Campanha Política",
-        "image": "/media/videos/politica-amaro-2.jpg",
-        "video": "/media/videos/politica-amaro-2.mp4"
-      },
-      {
-        "title": "Campanha — a cidade",
-        "tag": "Campanha política · reels",
-        "category": "Campanha Política",
-        "image": "/media/videos/politica-amaro-3.jpg",
-        "video": "/media/videos/politica-amaro-3.mp4"
-      }
-    ],
     "avatar": "/media/fotos/avatar.jpg"
   },
   "director": {
