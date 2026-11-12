@@ -30,6 +30,7 @@ const icons = {
   play: '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="2"/><path d="M19 15v18l15-9z" fill="#fff"/></svg>',
   email: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 5l9 8 9-8M3 19l7-7M21 19l-7-7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
   phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5l3 3.4-1.8 2.4a12 12 0 0 0 6.9 6.9l2.4-1.8 3.4 3-1.6 2.5C12 20.5 3.5 12 3.9 5.1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-3.9A8.5 8.5 0 1 1 8 19z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.2 8.3c.3-.5.7-.5 1-.4l.8 1.8c.1.3 0 .5-.2.7l-.5.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.5c.2-.2.4-.3.7-.2l1.8.8c.1.3.1.7-.4 1-1 .8-2.4.6-4.3-.8-1.6-1.2-2.7-2.6-3-3.8-.2-.8 0-1.5.7-2z" fill="currentColor"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
 };
 
@@ -259,12 +260,12 @@ function contactSection() {
       <ul class="contact-list">
         ${ct.items
           .map((i) => {
-            const href = i.type === 'email' ? `mailto:${i.value}` : `tel:${i.value.replace(/[^\d+]/g, '')}`;
-            return `<li>${icons[i.type]}<a href="${esc(href)}">${esc(i.label)}: ${esc(i.value)}</a></li>`;
+            const href = i.href || (i.type === 'email' ? `mailto:${i.value}` : `tel:${i.value.replace(/[^\d+]/g, '')}`);
+            const ext = /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '';
+            return `<li>${icons[i.type] || ''}<a href="${esc(href)}"${ext}><span class="contact-label">${esc(i.label)}</span> ${esc(i.value)}</a></li>`;
           })
           .join('')}
       </ul>
-      <div class="contact-social">${socialIcons(['instagram'])}</div>
     </div>
   </section>`;
 }

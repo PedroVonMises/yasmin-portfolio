@@ -291,19 +291,22 @@
     "title": "Contato",
     "items": [
       {
-        "type": "email",
-        "label": "audiovisual",
-        "value": "[[PREENCHER]]@email.com"
+        "type": "whatsapp",
+        "label": "WhatsApp",
+        "value": "(27) 99982-4624",
+        "href": "https://wa.me/5527999824624"
+      },
+      {
+        "type": "instagram",
+        "label": "Instagram",
+        "value": "@buymeaframe",
+        "href": "https://www.instagram.com/buymeaframe"
       },
       {
         "type": "email",
-        "label": "creator",
-        "value": "[[PREENCHER]]@email.com"
-      },
-      {
-        "type": "phone",
-        "label": "comercial",
-        "value": "[[PREENCHER]] (00) 00000-0000"
+        "label": "E-mail",
+        "value": "yasminmarketingestrategico@gmail.com",
+        "href": "mailto:yasminmarketingestrategico@gmail.com"
       }
     ]
   }
