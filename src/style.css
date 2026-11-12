@@ -257,7 +257,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .service-panel .service-card { --dir: inherit; }
 .service-panel.is-active .service-card { opacity: 1; transform: none; filter: none; transition: opacity .6s ease calc(.2s + var(--i) * .09s), transform .85s cubic-bezier(0.16, 1, 0.3, 1) calc(.2s + var(--i) * .09s), filter .6s ease calc(.2s + var(--i) * .09s), box-shadow .3s ease; }
 .service-card:hover { box-shadow: 0 10px 26px rgba(64, 64, 64, .2); }
-.service-index { font-family: var(--f-script); font-weight: 500; font-size: 30px; line-height: 1; color: #c98fbf; }
+.service-icon { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: var(--pink); color: #b5679f; }
+.service-icon svg { width: 30px; height: 30px; }
+/* Time left before the next automatic switch: a hairline filling along the bottom of the pill. */
+.service-pill { overflow: hidden; }
+.service-progress { position: absolute; left: 18px; right: 18px; bottom: 6px; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, .85); transform: scaleX(0); transform-origin: left; }
+.service-tabs.is-running .service-progress { animation: service-progress var(--interval, 10s) linear forwards; }
+@keyframes service-progress { to { transform: scaleX(1); } }
 .service-card h3 { margin: 0; font-family: var(--f-card); font-weight: 600; font-size: 15px; line-height: 1.35; text-transform: uppercase; letter-spacing: -0.02em; }
 .service-card p { margin: 0; font-family: var(--f-body); font-size: 14px; line-height: 1.6; color: #333; }
 .service-specs { display: grid; gap: 10px; margin: 4px 0 0; padding-top: 16px; border-top: 1px solid #ececec; }

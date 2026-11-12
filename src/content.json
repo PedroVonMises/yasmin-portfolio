@@ -204,14 +204,17 @@
         "label": "Social Media",
         "cards": [
           {
+            "icon": "metrics",
             "title": "Análise de métricas e definição do público",
             "text": "Análise estratégica do negócio e definição do público-alvo ideal, identificando perfil, necessidades, comportamentos e melhores formas de comunicação para direcionar a estratégia de conteúdo."
           },
           {
+            "icon": "calendar",
             "title": "Criação de Calendário de Conteúdos",
             "text": "Calendário estratégico em planilha compartilhada, com datas, formatos, referências e descrição de cada conteúdo, organizado para facilitar a produção e manter a comunicação da marca consistente."
           },
           {
+            "icon": "strategy",
             "title": "Desenvolvimento estratégico completo (Trimestral)",
             "text": "Desenvolvimento estratégico completo para direcionar a comunicação da marca, incluindo posicionamento, público-alvo, análise de perfil, pilares de conteúdo e direcionamentos estratégicos para fortalecer sua presença digital."
           }
@@ -222,6 +225,7 @@
         "label": "Storymaker",
         "cards": [
           {
+            "icon": "camera",
             "title": "Captação",
             "text": "Gravação de vídeos precificada por hora.",
             "specs": [
@@ -236,16 +240,19 @@
             ]
           },
           {
+            "icon": "clapper",
             "title": "Roteiro / Direção Criativa (Unitária / Pacotes)",
             "text": "Criação de roteiros estratégicos com direção criativa para cada vídeo, definindo conceito, narrativa, referências, cenas, enquadramentos e direcionamento de gravação para garantir um conteúdo mais profissional e alinhado ao objetivo da marca."
           },
           {
+            "icon": "custom",
             "title": "Projetos Personalizados",
             "text": "Projetos personalizados tanto de audiovisual, de editoriais, produção executiva ou estratégicos podem ser orçados selecionando esse serviço."
           }
         ]
       }
-    ]
+    ],
+    "interval": 10000
   },
   "creator": {
     "title": "Creator",
