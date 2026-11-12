@@ -67,7 +67,7 @@ function header() {
 
 const footer = () => `
   <footer class="site-footer">
-    <div class="wrap">© ${new Date().getFullYear()} ${esc(c.name)} — ${esc(c.role)}</div>
+    <div class="wrap">© ${new Date().getFullYear()} ${esc(c.name)} — ${esc(c.footerTagline || c.role)}</div>
   </footer>`;
 
 // ---------- section builders ----------
