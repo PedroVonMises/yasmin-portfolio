@@ -171,15 +171,15 @@ function gallerySection(limit) {
 
 // Line icons for the Serviços cards (24px grid, drawn with the text colour).
 const serviceIcons = {
-  metrics: '<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/><circle cx="18.5" cy="6" r="2.2"/><path d="M20.1 7.6 22 9.5"/>',
-  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 17h2M11 17h2"/>',
-  strategy: '<circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4.2"/><circle cx="11" cy="13" r="1" fill="currentColor"/><path d="M11 13 20 4M17 4h3v3"/>',
-  camera: '<rect x="2.5" y="6.5" width="13.5" height="11" rx="1.5"/><path d="m16 10.5 5.5-3v9l-5.5-3z"/><circle cx="6.5" cy="10" r="1" fill="currentColor"/>',
-  clapper: '<path d="M3.5 10h17v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="m3.2 9.6-.6-3.2 15.7-3 .6 3.2z"/><path d="m7.4 5.6 2.3 3M12 4.7l2.3 3"/><path d="M7 14h10M7 17h6"/>',
-  custom: '<path d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9z"/><path d="M19 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/><path d="M5 3.5l.5 1.5 1.5.5-1.5.5L5 7.5 4.5 6 3 5.5l1.5-.5z"/>',
+  metrics: '<path d="M4 20V4M4 20h16"/><path class="ic-bar" d="M8 16v-4"/><path class="ic-bar" d="M12 16V8"/><path class="ic-bar" d="M16 16v-6"/><g class="ic-lens"><circle cx="18.5" cy="6" r="2.2"/><path d="M20.1 7.6 22 9.5"/></g>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17"/><path class="ic-ring" d="M8 3v4"/><path class="ic-ring" d="M16 3v4"/><path class="ic-day" d="M7.5 13.5h2"/><path class="ic-day" d="M11 13.5h2"/><path class="ic-day" d="M14.5 13.5h2"/><path class="ic-day" d="M7.5 17h2"/><path class="ic-day" d="M11 17h2"/><path class="ic-check" d="m14.3 17.2 1.2 1.1 2.2-2.4"/>',
+  strategy: '<circle class="ic-pulse" cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4.2"/><circle cx="11" cy="13" r="1" fill="currentColor"/><g class="ic-arrow"><path d="M11 13 20 4M17 4h3v3"/></g>',
+  camera: '<rect x="2.5" y="6.5" width="13.5" height="11" rx="1.5"/><path class="ic-lens-cone" d="m16 10.5 5.5-3v9l-5.5-3z"/><circle class="ic-rec" cx="6.5" cy="10" r="1.1" fill="currentColor"/>',
+  clapper: '<path d="M3.5 10h17v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><g class="ic-stick"><path d="m3.2 9.6-.6-3.2 15.7-3 .6 3.2z"/><path d="m7.4 5.6 2.3 3M12 4.7l2.3 3"/></g><path class="ic-line" d="M7 14h10"/><path class="ic-line" d="M7 17h6"/>',
+  custom: '<path class="ic-star" d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9z"/><path class="ic-star ic-s2" d="M19 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/><path class="ic-star ic-s3" d="M5 3.5l.5 1.5 1.5.5-1.5.5L5 7.5 4.5 6 3 5.5l1.5-.5z"/>',
 };
 const serviceIcon = (k) =>
-  serviceIcons[k] ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${serviceIcons[k]}</svg>` : '';
+  serviceIcons[k] ? `<svg class="ic ic-${k}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${serviceIcons[k]}</svg>` : '';
 
 // Serviços: two tabs ("Social Media" / "Storymaker") over a segmented switch with a sliding pill.
 // Both panels share one grid cell, so the section keeps the height of the taller one and the swap
@@ -434,6 +434,7 @@ function wireServiceTabs(list) {
   document.addEventListener('visibilitychange', restart);
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
+    section.classList.toggle('is-visible', visible);
     restart();
   }, { threshold: 0.2 }).observe(section);
   list.addEventListener('keydown', (e) => {
