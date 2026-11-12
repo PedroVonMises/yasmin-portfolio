@@ -237,3 +237,110 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .podcasts .mv-card { flex: 0 0 calc((100% - 82px) / 3); }
 .podcasts .thumb .media { width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 520px) { .podcasts .mv-card { flex-basis: 100%; } }
+
+/* ---------- serviços ---------- */
+/* Two panels share one grid cell (the stage keeps the taller one's height, no jump on switch).
+   The inactive panel's cards wait off to the side, blurred; switching slides the outgoing set
+   away and brings the new one in card by card. --dir picks the side (1 = enters from the right). */
+.services-head { display: grid; justify-items: center; margin-bottom: 44px; }
+.services-head .title { margin-bottom: 22px; }
+.service-tabs { --active: 0; position: relative; display: grid; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); padding: 5px; border-radius: 999px; background: #f1f1f1; }
+.service-pill { position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / var(--n, 2)); border-radius: 999px; background: #111; box-shadow: 0 4px 14px rgba(0, 0, 0, .18); transform: translateX(calc(var(--active) * 100%)); transition: transform .55s cubic-bezier(0.65, 0, 0.35, 1); }
+.service-tab { position: relative; z-index: 1; padding: 13px 30px; border-radius: 999px; font-family: var(--f-title); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: -0.06em; white-space: nowrap; color: var(--nav); transition: color .35s ease; }
+.service-tab[aria-selected="true"] { color: #fff; }
+.service-tab:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+.service-stage { display: grid; width: min(1175px, 100%); margin-inline: auto; touch-action: pan-y; }
+.service-panel { grid-area: 1 / 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 41px; visibility: hidden; pointer-events: none; transition: visibility 0s linear .45s; }
+.service-panel.is-active { visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.service-card { display: flex; flex-direction: column; gap: 14px; padding: 30px 28px 32px; background: #fff; box-shadow: 0 2px 10px rgba(64, 64, 64, .14); opacity: 0; transform: translate3d(calc(var(--dir) * 56px), 0, 0) scale(.97); filter: blur(6px); transition: opacity .3s ease, transform .45s cubic-bezier(0.55, 0, 0.75, 0.2), filter .3s ease, box-shadow .3s ease; }
+.service-panel { --dir: 1; }
+.service-panel .service-card { --dir: inherit; }
+.service-panel.is-active .service-card { opacity: 1; transform: none; filter: none; transition: opacity .6s ease calc(.2s + var(--i) * .09s), transform .85s cubic-bezier(0.16, 1, 0.3, 1) calc(.2s + var(--i) * .09s), filter .6s ease calc(.2s + var(--i) * .09s), box-shadow .3s ease; }
+.service-card:hover { box-shadow: 0 10px 26px rgba(64, 64, 64, .2); }
+.service-icon { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: var(--pink); color: #b5679f; }
+.service-icon svg { width: 30px; height: 30px; }
+/* Time left before the next automatic switch: a hairline filling along the bottom of the pill. */
+.service-pill { overflow: hidden; }
+.service-progress { position: absolute; left: 18px; right: 18px; bottom: 6px; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, .85); transform: scaleX(0); transform-origin: left; }
+.service-tabs.is-running .service-progress { animation: service-progress var(--interval, 10s) linear forwards; }
+@keyframes service-progress { to { transform: scaleX(1); } }
+.service-card h3 { margin: 0; font-family: var(--f-card); font-weight: 600; font-size: 15px; line-height: 1.35; text-transform: uppercase; letter-spacing: -0.02em; }
+.service-card p { margin: 0; font-family: var(--f-body); font-size: 14px; line-height: 1.6; color: #333; }
+.service-specs { display: grid; gap: 10px; margin: 4px 0 0; padding-top: 16px; border-top: 1px solid #ececec; }
+.service-specs div { display: grid; gap: 2px; }
+.service-specs dt { font-family: var(--f-cond); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.service-specs dd { margin: 0; font-family: var(--f-card); font-weight: 600; font-size: 13px; }
+@media (max-width: 1000px) {
+  .service-panel { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; width: 100%; gap: 18px; }
+}
+@media (max-width: 520px) {
+  .service-tab { padding: 12px 18px; font-size: 12px; }
+  .service-card { padding: 24px 20px 26px; }
+}
+/* Reduced motion (e.g. Windows "Animation effects" off): no sliding or blur, just a quick
+   crossfade. The switch itself is unchanged, so the tabs keep working. */
+@media (prefers-reduced-motion: reduce) {
+  .service-pill { transition-duration: .2s; }
+  .service-card, .service-panel.is-active .service-card { transform: none; filter: none; transition: opacity .25s ease, box-shadow .3s ease; }
+  .service-panel { transition-delay: .25s; }
+}
+
+/* ---------- serviços: ícones animados ---------- */
+/* Pure CSS on the SVG parts (transform/opacity/stroke-dashoffset only, so it stays on the
+   compositor and needs no library). Loops run only on the visible tab while the section is on
+   screen; everything else is paused. Each icon gets a short "act" followed by a rest. */
+.ic * { transform-box: fill-box; }
+.services .service-icon .ic * { animation-play-state: paused; }
+.services.is-visible .service-panel.is-active .service-icon .ic * { animation-play-state: running; }
+
+/* métricas: bars grow one after the other, the lens hovers over them */
+.ic-metrics .ic-bar { transform-origin: 50% 100%; animation: ic-bar 3s cubic-bezier(.3, 1.4, .5, 1) infinite; }
+.ic-metrics .ic-bar:nth-of-type(3) { animation-delay: .15s; }
+.ic-metrics .ic-bar:nth-of-type(4) { animation-delay: .3s; }
+.ic-metrics .ic-lens { animation: ic-lens 3s ease-in-out infinite; }
+@keyframes ic-bar { 0%, 100% { transform: scaleY(1); } 12% { transform: scaleY(.25); } 35% { transform: scaleY(1); } }
+@keyframes ic-lens { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(-2.5px, 3px); } 60% { transform: translate(-6px, 1px); } }
+
+/* calendário: days light up in sequence, then the check is drawn */
+.ic-calendar .ic-day { animation: ic-day 3.6s ease infinite; }
+.ic-calendar .ic-day:nth-of-type(5) { animation-delay: .15s; }
+.ic-calendar .ic-day:nth-of-type(6) { animation-delay: .3s; }
+.ic-calendar .ic-day:nth-of-type(7) { animation-delay: .45s; }
+.ic-calendar .ic-day:nth-of-type(8) { animation-delay: .6s; }
+.ic-calendar .ic-check { stroke-dasharray: 6; stroke-dashoffset: 6; animation: ic-check 3.6s ease infinite; }
+.ic-calendar .ic-ring { transform-origin: 50% 100%; animation: ic-ring 3.6s ease-in-out infinite; }
+@keyframes ic-day { 0%, 60%, 100% { opacity: 1; } 10% { opacity: .2; } 25% { opacity: 1; } }
+@keyframes ic-check { 0%, 30% { stroke-dashoffset: 6; } 45%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 6; } }
+@keyframes ic-ring { 0%, 40%, 100% { transform: none; } 45% { transform: translateY(-1px); } 50% { transform: none; } }
+
+/* estratégia: the arrow flies into the bullseye and the target ripples */
+.ic-strategy .ic-arrow { animation: ic-arrow 3s cubic-bezier(.5, 0, .2, 1) infinite; }
+.ic-strategy .ic-pulse { transform-origin: 50% 50%; animation: ic-pulse 3s ease-out infinite; }
+@keyframes ic-arrow { 0% { transform: translate(5px, -5px); opacity: 0; } 15% { opacity: 1; } 30%, 80% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes ic-pulse { 0%, 28% { transform: scale(1); } 36% { transform: scale(1.08); } 50%, 100% { transform: scale(1); } }
+
+/* captação: REC light blinks, the lens nudges like a zoom */
+.ic-camera .ic-rec { animation: ic-rec 1.4s steps(1) infinite; }
+.ic-camera .ic-lens-cone { transform-origin: 0% 50%; animation: ic-zoom 2.8s ease-in-out infinite; }
+@keyframes ic-rec { 50% { opacity: .15; } }
+@keyframes ic-zoom { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(.8); } }
+
+/* roteiro / direção: the clapper snaps shut, then the script lines are written */
+.ic-clapper .ic-stick { transform-origin: 0% 100%; animation: ic-clap 2.8s cubic-bezier(.6, 0, .4, 1) infinite; }
+.ic-clapper .ic-line { stroke-dasharray: 10; stroke-dashoffset: 10; animation: ic-write 2.8s ease infinite; }
+.ic-clapper .ic-line + .ic-line { animation-delay: .15s; }
+@keyframes ic-clap { 0%, 100% { transform: rotate(0); } 15%, 30% { transform: rotate(-16deg); } 38% { transform: rotate(0); } 42% { transform: rotate(-3deg); } 46% { transform: rotate(0); } }
+@keyframes ic-write { 0%, 40% { stroke-dashoffset: 10; } 65%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 10; } }
+
+/* projetos personalizados: the sparkles twinkle out of step */
+.ic-custom .ic-star { transform-origin: 50% 50%; animation: ic-twinkle 2.4s ease-in-out infinite; }
+.ic-custom .ic-s2 { animation-delay: .6s; }
+.ic-custom .ic-s3 { animation-delay: 1.2s; }
+@keyframes ic-twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 40% { transform: scale(.7) rotate(25deg); opacity: .55; } 60% { transform: scale(1.1) rotate(0); opacity: 1; } }
+
+/* Gentler but still looping under "menos animação" (the owner wants motion there too):
+   slower and with the bigger moves toned down. */
+@media (prefers-reduced-motion: reduce) {
+  .ic * { animation-duration: 5s !important; }
+  .ic-camera .ic-rec { animation-duration: 2s !important; }
+}

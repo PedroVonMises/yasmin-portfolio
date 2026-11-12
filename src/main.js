@@ -52,6 +52,7 @@ function header() {
       <nav class="nav" aria-label="Principal">
         <div class="nav-main">
           <a href="${home}#filmmaker">filmmaker</a>
+          <a href="${home}#servicos">serviços</a>
           <a href="${home}#creator">creator</a>
           <a href="${home}#podcasts">podcasts</a>
           <a href="${home}#edicao">edição</a>
@@ -168,6 +169,60 @@ function gallerySection(limit) {
   </section>`;
 }
 
+// Line icons for the Serviços cards (24px grid, drawn with the text colour).
+const serviceIcons = {
+  metrics: '<path d="M4 20V4M4 20h16"/><path class="ic-bar" d="M8 16v-4"/><path class="ic-bar" d="M12 16V8"/><path class="ic-bar" d="M16 16v-6"/><g class="ic-lens"><circle cx="18.5" cy="6" r="2.2"/><path d="M20.1 7.6 22 9.5"/></g>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17"/><path class="ic-ring" d="M8 3v4"/><path class="ic-ring" d="M16 3v4"/><path class="ic-day" d="M7.5 13.5h2"/><path class="ic-day" d="M11 13.5h2"/><path class="ic-day" d="M14.5 13.5h2"/><path class="ic-day" d="M7.5 17h2"/><path class="ic-day" d="M11 17h2"/><path class="ic-check" d="m14.3 17.2 1.2 1.1 2.2-2.4"/>',
+  strategy: '<circle class="ic-pulse" cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4.2"/><circle cx="11" cy="13" r="1" fill="currentColor"/><g class="ic-arrow"><path d="M11 13 20 4M17 4h3v3"/></g>',
+  camera: '<rect x="2.5" y="6.5" width="13.5" height="11" rx="1.5"/><path class="ic-lens-cone" d="m16 10.5 5.5-3v9l-5.5-3z"/><circle class="ic-rec" cx="6.5" cy="10" r="1.1" fill="currentColor"/>',
+  clapper: '<path d="M3.5 10h17v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><g class="ic-stick"><path d="m3.2 9.6-.6-3.2 15.7-3 .6 3.2z"/><path d="m7.4 5.6 2.3 3M12 4.7l2.3 3"/></g><path class="ic-line" d="M7 14h10"/><path class="ic-line" d="M7 17h6"/>',
+  custom: '<path class="ic-star" d="M12 3.5 13.8 9l5.7 1.8-5.7 1.8L12 18.2l-1.8-5.6L4.5 10.8 10.2 9z"/><path class="ic-star ic-s2" d="M19 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/><path class="ic-star ic-s3" d="M5 3.5l.5 1.5 1.5.5-1.5.5L5 7.5 4.5 6 3 5.5l1.5-.5z"/>',
+};
+const serviceIcon = (k) =>
+  serviceIcons[k] ? `<svg class="ic ic-${k}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${serviceIcons[k]}</svg>` : '';
+
+// Serviços: two tabs ("Social Media" / "Storymaker") over a segmented switch with a sliding pill.
+// Both panels share one grid cell, so the section keeps the height of the taller one and the swap
+// is pure CSS class toggling: it can never get stuck waiting for an animation event.
+function servicesSection() {
+  const s = c.services;
+  if (!s?.tabs?.length) return '';
+  const card = (k, i) => `
+    <article class="service-card" style="--i:${i}">
+      <span class="service-icon">${serviceIcon(k.icon)}</span>
+      <h3>${esc(k.title)}</h3>
+      <p>${esc(k.text)}</p>
+      ${k.specs?.length ? `<dl class="service-specs">${k.specs.map((sp) => `<div><dt>${esc(sp.label)}</dt><dd>${esc(sp.value)}</dd></div>`).join('')}</dl>` : ''}
+    </article>`;
+  return `
+  <section id="servicos" class="section services">
+    <div class="wrap">
+      <div class="services-head">
+        <h2 class="title">${esc(s.title)}</h2>
+        <div class="service-tabs" role="tablist" aria-label="${esc(s.title)}" style="--n:${s.tabs.length}; --interval:${s.interval || 10000}ms" data-interval="${s.interval || 10000}">
+          <span class="service-pill" aria-hidden="true"><i class="service-progress"></i></span>
+          ${s.tabs
+            .map(
+              (t, i) =>
+                `<button class="service-tab" role="tab" id="tab-${esc(t.id)}" aria-controls="panel-${esc(t.id)}" aria-selected="${!i}" tabindex="${i ? -1 : 0}">${esc(t.label)}</button>`,
+            )
+            .join('')}
+        </div>
+      </div>
+      <div class="service-stage">
+        ${s.tabs
+          .map(
+            (t, i) => `
+        <div class="service-panel${i ? '' : ' is-active'}" role="tabpanel" id="panel-${esc(t.id)}" aria-labelledby="tab-${esc(t.id)}"${i ? ' inert aria-hidden="true"' : ''}>
+          ${t.cards.map(card).join('')}
+        </div>`,
+          )
+          .join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
 function creatorSection() {
   const cr = c.creator;
   const profile = (k, label) => `
@@ -273,7 +328,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + podcastSection() + creatorSection() + reelSection(),
+  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + podcastSection() + servicesSection() + creatorSection() + reelSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),
@@ -322,6 +377,81 @@ function wire() {
   heroAutoplay($('.hero-track'));
   hoverPreviews();
   document.querySelectorAll('.filters').forEach(wireFilters);
+  document.querySelectorAll('.service-tabs').forEach(wireServiceTabs);
+}
+
+// Switch the Serviços tabs: moves the pill and swaps which panel is active. Arrow keys,
+// Home/End and a horizontal swipe on the cards also switch. The tabs also advance on their own
+// every `interval` ms (10s) while the section is on screen; keyboard focus inside it pauses, and a
+// manual switch restarts the count. (No hover pause: the cursor usually rests over the section
+// while scrolling, which would stop the rotation for most desktop visitors.) A thin bar inside the pill shows the time left. The motion itself lives in CSS
+// (a softer crossfade when the OS asks for reduced motion), so the swap always happens.
+function wireServiceTabs(list) {
+  const tabs = [...list.querySelectorAll('[role="tab"]')];
+  const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
+  let current = 0;
+  const select = (i, focus = false) => {
+    i = (i + tabs.length) % tabs.length;
+    if (i === current) return;
+    const dir = i > current ? 1 : -1;
+    current = i;
+    list.style.setProperty('--active', i);
+    tabs.forEach((t, k) => {
+      t.setAttribute('aria-selected', String(k === i));
+      t.tabIndex = k === i ? 0 : -1;
+    });
+    panels.forEach((p, k) => {
+      p.style.setProperty('--dir', k === i ? dir : -dir);
+      p.classList.toggle('is-active', k === i);
+      p.toggleAttribute('inert', k !== i);
+      p.setAttribute('aria-hidden', String(k !== i));
+    });
+    if (focus) tabs[i].focus();
+    restart();
+  };
+  const section = list.closest('section');
+  const interval = Number(list.dataset.interval) || 10000;
+  let timer = 0;
+  let visible = false;
+  let paused = false;
+  const restart = () => {
+    clearTimeout(timer);
+    const running = visible && !paused && !document.hidden;
+    // Restart the progress bar from zero (remove the class, force a reflow, add it back).
+    list.classList.remove('is-running');
+    void list.offsetWidth;
+    list.classList.toggle('is-running', running);
+    if (running) timer = setTimeout(() => select(current + 1), interval);
+  };
+  tabs.forEach((t, i) => t.addEventListener('click', () => select(i)));
+  const pause = (on) => {
+    if (paused === on) return;
+    paused = on;
+    restart();
+  };
+  section.addEventListener('focusin', (e) => e.target.matches(':focus-visible') && pause(true));
+  section.addEventListener('focusout', (e) => !section.contains(e.relatedTarget) && pause(false));
+  document.addEventListener('visibilitychange', restart);
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    section.classList.toggle('is-visible', visible);
+    restart();
+  }, { threshold: 0.2 }).observe(section);
+  list.addEventListener('keydown', (e) => {
+    const k = { ArrowRight: current + 1, ArrowLeft: current - 1, Home: 0, End: tabs.length - 1 }[e.key];
+    if (k === undefined) return;
+    e.preventDefault();
+    select(k, true);
+  });
+  const stage = panels[0]?.parentElement;
+  let start = null;
+  stage?.addEventListener('pointerdown', (e) => (start = e.pointerType === 'mouse' ? null : { x: e.clientX, y: e.clientY }));
+  stage?.addEventListener('pointerup', (e) => {
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - start.y)) select(current + (dx < 0 ? 1 : -1));
+    start = null;
+  });
 }
 
 // Play a muted preview while a card is hovered (desktop only); the file loads on first hover.
