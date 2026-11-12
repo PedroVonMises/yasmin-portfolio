@@ -189,17 +189,6 @@ function creatorSection() {
   </section>`;
 }
 
-function campaignSection() {
-  const cr = c.creator;
-  return `
-  <section id="campanha-politica" class="section campaign-section">
-    <div class="wrap">
-      <h2 class="title center small">${esc(cr.campaignsTitle)}</h2>
-      <div class="grid-3 campaigns">${cr.campaigns.map(videoCard).join('')}</div>
-    </div>
-  </section>`;
-}
-
 function editSection(limit = 5) {
   const d = c.director;
   return `
@@ -283,7 +272,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + campaignSection() + filmmakerSection(5) + editSection() + podcastSection() + creatorSection() + reelSection(),
+  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + podcastSection() + creatorSection() + reelSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),

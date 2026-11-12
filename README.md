@@ -19,4 +19,4 @@ npm run build    # outputs dist/
 npm run preview  # serves dist/
 ```
 
-Pages: `index.html` (one-page: hero, sobre, filmmaker, galeria, creator, campanhas, diretora), `filmmaker.html`, `galeria.html`, `contato.html`.
+Pages: `index.html` (one-page: hero, sobre, filmmaker, galeria, creator, diretora), `filmmaker.html`, `galeria.html`, `contato.html`.
