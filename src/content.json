@@ -3,6 +3,7 @@
   "name": "Yasmin",
   "logo": "YASMIN",
   "role": "Filmmaker & Editora de Vídeo",
+  "footerTagline": "Storymaker & Social Media",
   "seoDescription": "Yasmin — filmmaker e editora de vídeo: captação e edição de shows, eventos, podcasts e campanhas.",
   "socials": {
     "instagram": {
@@ -197,7 +198,7 @@
   },
   "creator": {
     "title": "Creator",
-    "tagline": "[[PREENCHER]] artista audiovisual & criadora de conteúdo",
+    "tagline": "artista audiovisual & storymaker",
     "campaignsTitle": "Campanha Política",
     "campaigns": [
       {
