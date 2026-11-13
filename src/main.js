@@ -243,9 +243,14 @@ function creatorSection() {
     <div class="wrap">
       <div class="creator-head">
         <h2 class="title">${esc(cr.title)}</h2>
-        <div class="creator-handle"><strong>${esc(c.socials.instagram.handle)}</strong><small>${esc(cr.tagline)}</small></div>
       </div>
-      <div class="profiles">${profile('instagram', 'Instagram')}</div>
+      ${
+        cr.image
+          ? `<a class="creator-banner" href="${esc(c.socials.instagram.url)}" target="_blank" rel="noopener" aria-label="Abrir o Instagram ${esc(c.socials.instagram.handle)}">
+              <img src="${esc(cr.image)}" alt="${esc(cr.imageAlt || `Instagram ${c.socials.instagram.handle}`)}" loading="lazy" decoding="async">
+            </a>`
+          : `<div class="profiles">${profile('instagram', 'Instagram')}</div>`
+      }
     </div>
   </section>`;
 }

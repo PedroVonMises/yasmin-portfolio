@@ -253,8 +253,9 @@
   },
   "creator": {
     "title": "Creator",
-    "tagline": "artista audiovisual & storymaker",
-    "avatar": "/media/fotos/avatar.jpg"
+    "avatar": "/media/fotos/avatar.jpg",
+    "image": "/media/fotos/creator-instagram.png",
+    "imageAlt": "Perfil do Instagram @buymeaframe: Yasmin Gama, estrategista digital, criativa e videomaker"
   },
   "director": {
     "title": "Edição",

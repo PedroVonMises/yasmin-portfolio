@@ -229,6 +229,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .avatar { object-fit: cover; }
 .creator-head { grid-template-columns: auto 1fr; }
 .profiles { grid-template-columns: 1fr; }
+/* Creator: the Instagram profile card is a picture that links to the profile. It never grows past
+   its real width (657px) so it stays sharp, and shrinks with the screen on phones. */
+.creator-banner { display: block; width: min(657px, 100%); transition: transform .25s ease, opacity .25s ease; }
+.creator-banner img { display: block; width: 100%; height: auto; aspect-ratio: 657 / 222; }
+.creator-banner:hover { transform: translateY(-2px); opacity: .85; }
+@media (max-width: 1000px) { .creator-banner { margin-inline: auto; } }
 .nav-social { align-items: center; margin-left: 6px; }
 .nav-social .social { display: inline-flex; align-items: center; }
 .nav-social svg { width: 24px; height: 24px; }
