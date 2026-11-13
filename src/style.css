@@ -81,6 +81,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- about ---------- */
 .about { display: grid; grid-template-columns: 1.15fr .85fr; gap: 60px; align-items: start; }
 .about-text { font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+.about-text strong { font-weight: 700; }
 .script { font-family: var(--f-script); font-weight: 500; font-size: 46px; margin: 0 0 18px; }
 .about-portrait { width: 350px; justify-self: center; aspect-ratio: 350 / 440; border: 2px solid #333; padding: 2px; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, .11); }
 
@@ -212,7 +213,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .filter { padding: 8px 18px; border-radius: 999px; background: #f1f1f1; font-family: var(--f-nav); font-weight: 600; font-size: 14px; color: var(--nav); transition: background .2s, color .2s; }
 .filter:hover { background: #e4e4e4; }
 .filter.active { background: #111; color: #fff; }
-.video-card[hidden] { display: none; }
+.video-card[hidden], .fill-rows > .is-trimmed { display: none; }
+.fill-rows.is-short { grid-template-columns: repeat(auto-fit, var(--card-w)); justify-content: center; }
 #edicao .grid-5 { margin-top: 10px; }
 .reel { position: relative; }
 .reel-cta { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px 10px 12px; border-radius: 999px; background: rgba(0, 0, 0, .45); backdrop-filter: blur(6px); color: #fff; font-family: var(--f-cond); font-size: 16px; text-transform: uppercase; letter-spacing: .02em; line-height: 1; transition: background .2s; }
@@ -227,6 +229,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .avatar { object-fit: cover; }
 .creator-head { grid-template-columns: auto 1fr; }
 .profiles { grid-template-columns: 1fr; }
+/* Creator: the Instagram profile card is a picture that links to the profile. It never grows past
+   its real width (657px) so it stays sharp, and shrinks with the screen on phones. */
+.creator-banner { display: block; width: min(657px, 100%); transition: transform .25s ease, opacity .25s ease; }
+.creator-banner img { display: block; width: 100%; height: auto; aspect-ratio: 657 / 222; }
+.creator-banner:hover { transform: translateY(-2px); opacity: .85; }
+@media (max-width: 1000px) { .creator-banner { margin-inline: auto; } }
 .nav-social { align-items: center; margin-left: 6px; }
 .nav-social .social { display: inline-flex; align-items: center; }
 .nav-social svg { width: 24px; height: 24px; }
@@ -237,6 +245,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .podcasts .mv-card { flex: 0 0 calc((100% - 82px) / 3); }
 .podcasts .thumb .media { width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 520px) { .podcasts .mv-card { flex-basis: 100%; } }
+/* Sixth tile of the podcasts grid: completes the second row and links to the full playlist. */
+.playlist-card { display: flex; flex-direction: column; }
+.playlist-card .thumb { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #111; color: #fff; font-family: var(--f-cond); font-size: 18px; text-transform: uppercase; letter-spacing: .03em; transition: background .2s; }
+.playlist-card .thumb svg { width: 54px; height: 54px; }
+.playlist-card:hover .thumb { background: #000; }
+.playlist-card:hover .thumb svg { color: #ff0033; }
 
 /* ---------- serviços ---------- */
 /* Two panels share one grid cell (the stage keeps the taller one's height, no jump on switch).

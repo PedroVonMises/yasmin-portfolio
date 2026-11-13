@@ -6,6 +6,9 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 
+// Escapes text, then turns **termo** into <strong>termo</strong> (used for highlights in the bio).
+const rich = (s = '') => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
 // ---------- media helpers ----------
 
 // An image slot: real <img> when a path is set, otherwise a labelled grey placeholder.
@@ -110,7 +113,7 @@ function aboutSection() {
     <div class="wrap about">
       <div class="about-text">
         <h2 class="script">${esc(a.heading)}</h2>
-        ${a.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('')}
+        ${a.paragraphs.map((p) => `<p>${rich(p)}</p>`).join('')}
       </div>
       <div class="about-portrait">${media(a.portrait, `Retrato de ${c.name}`)}</div>
     </div>
@@ -119,7 +122,9 @@ function aboutSection() {
 
 // Category chips that filter the cards below them (full pages only).
 function filters(items) {
-  const cats = [...new Set(items.map((p) => p.category).filter(Boolean))];
+  // A chip that would show a single card is left out (that card still appears under "Todos").
+  const count = (k) => items.filter((p) => p.category === k).length;
+  const cats = [...new Set(items.map((p) => p.category).filter(Boolean))].filter((k) => count(k) > 1);
   if (cats.length < 2) return '';
   return `<div class="filters" role="group" aria-label="Filtrar por categoria">
     ${['Todos', ...cats].map((k, i) => `<button class="filter${i ? '' : ' active'}" data-filter="${i ? esc(k) : ''}" aria-pressed="${!i}">${esc(k)}</button>`).join('')}
@@ -136,7 +141,7 @@ function filmmakerSection(limit) {
       <h2 class="title center">${esc(f.title)}</h2>
       ${f.subtitle ? `<p class="subtitle center lead">${esc(f.subtitle)}</p>` : ''}
       ${limit ? '' : filters(items)}
-      <div class="grid-5">${items.map(videoCard).join('')}</div>
+      <div class="grid-5 fill-rows">${items.map(videoCard).join('')}</div>
       ${limit ? '<div class="center"><a class="pill" href="filmmaker.html">ver mais</a></div>' : ''}
     </div>
   </section>`;
@@ -238,14 +243,19 @@ function creatorSection() {
     <div class="wrap">
       <div class="creator-head">
         <h2 class="title">${esc(cr.title)}</h2>
-        <div class="creator-handle"><strong>${esc(c.socials.instagram.handle)}</strong><small>${esc(cr.tagline)}</small></div>
       </div>
-      <div class="profiles">${profile('instagram', 'Instagram')}</div>
+      ${
+        cr.image
+          ? `<a class="creator-banner" href="${esc(c.socials.instagram.url)}" target="_blank" rel="noopener" aria-label="Abrir o Instagram ${esc(c.socials.instagram.handle)}">
+              <img src="${esc(cr.image)}" alt="${esc(cr.imageAlt || `Instagram ${c.socials.instagram.handle}`)}" loading="lazy" decoding="async">
+            </a>`
+          : `<div class="profiles">${profile('instagram', 'Instagram')}</div>`
+      }
     </div>
   </section>`;
 }
 
-function editSection(limit = 5) {
+function editSection(limit = 6) {
   const d = c.director;
   return `
   <section id="edicao" class="band band-pink">
@@ -254,7 +264,7 @@ function editSection(limit = 5) {
         <h2 class="title">${esc(d.title)}</h2>
         <p class="subtitle">${esc(d.subtitle)}</p>
       </div>
-      <div class="grid-5">${d.projects.slice(0, limit).map(videoCard).join('')}</div>
+      <div class="grid-5 fill-rows">${d.projects.slice(0, limit).map(videoCard).join('')}</div>
       <div class="center"><a class="pill" href="filmmaker.html">ver todos</a></div>
     </div>
   </section>`;
@@ -286,8 +296,10 @@ function podcastSection() {
           </figure>`,
           )
           .join('')}
+        <a class="mv-card playlist-card" href="https://www.youtube.com/playlist?list=${esc(p.playlist)}" target="_blank" rel="noopener">
+          <span class="thumb wide">${icons.youtube}<span>ver playlist completa</span></span>
+        </a>
       </div>
-      <div class="center"><a class="pill" href="https://www.youtube.com/playlist?list=${esc(p.playlist)}" target="_blank" rel="noopener">ver playlist completa</a></div>
     </div>
   </section>`;
 }
@@ -328,7 +340,7 @@ function contactSection() {
 // ---------- pages ----------
 
 const pages = {
-  home: () => heroSection() + aboutSection() + filmmakerSection(5) + editSection() + podcastSection() + servicesSection() + creatorSection() + reelSection(),
+  home: () => heroSection() + aboutSection() + filmmakerSection(6) + editSection() + podcastSection() + servicesSection() + creatorSection() + reelSection(),
   filmmaker: () => filmmakerSection(),
   galeria: () => gallerySection(),
   contato: () => contactSection(),
@@ -378,6 +390,35 @@ function wire() {
   hoverPreviews();
   document.querySelectorAll('.filters').forEach(wireFilters);
   document.querySelectorAll('.service-tabs').forEach(wireServiceTabs);
+  fillRows();
+  let raf = 0;
+  addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(fillRows);
+  });
+}
+
+// Keeps every card grid free of gaps: only whole rows are shown for the current number of
+// columns (5, 3 or 2 depending on the screen), so a section never ends in a half-empty row.
+// Pages render one or two spare cards for this. If a filter leaves fewer cards than one row,
+// that short row is centered instead.
+function fillRows() {
+  document.querySelectorAll('.fill-rows').forEach((grid) => {
+    grid.classList.remove('is-short');
+    grid.style.removeProperty('--card-w');
+    const cards = [...grid.children];
+    cards.forEach((card) => card.classList.remove('is-trimmed'));
+    const shown = cards.filter((card) => !card.hidden);
+    const tracks = getComputedStyle(grid).gridTemplateColumns.split(' ');
+    const cols = tracks.length;
+    if (!shown.length || cols < 2) return;
+    if (shown.length < cols) {
+      grid.style.setProperty('--card-w', tracks[0]);
+      grid.classList.add('is-short');
+      return;
+    }
+    shown.slice(shown.length - (shown.length % cols)).forEach((card) => card.classList.add('is-trimmed'));
+  });
 }
 
 // Switch the Serviços tabs: moves the pill and swaps which panel is active. Arrow keys,
@@ -483,6 +524,7 @@ function wireFilters(group) {
     grid.querySelectorAll('.video-card').forEach((card) => {
       card.hidden = !!btn.dataset.filter && card.dataset.category !== btn.dataset.filter;
     });
+    fillRows();
   });
 }
 
