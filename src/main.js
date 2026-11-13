@@ -6,6 +6,9 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 
+// Escapes text, then turns **termo** into <strong>termo</strong> (used for highlights in the bio).
+const rich = (s = '') => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
 // ---------- media helpers ----------
 
 // An image slot: real <img> when a path is set, otherwise a labelled grey placeholder.
@@ -110,7 +113,7 @@ function aboutSection() {
     <div class="wrap about">
       <div class="about-text">
         <h2 class="script">${esc(a.heading)}</h2>
-        ${a.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('')}
+        ${a.paragraphs.map((p) => `<p>${rich(p)}</p>`).join('')}
       </div>
       <div class="about-portrait">${media(a.portrait, `Retrato de ${c.name}`)}</div>
     </div>
