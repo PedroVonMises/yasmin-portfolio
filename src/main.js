@@ -304,7 +304,8 @@ function podcastSection() {
   </section>`;
 }
 
-// Full-width Tr/st reel, shown at the very end of the home page.
+// Full-width reel (Yasmin's animation), shown at the very end of the home page.
+// Without a separate reelLoop the same file plays muted in the background and with sound in the lightbox.
 function reelSection() {
   const d = c.director;
   return `

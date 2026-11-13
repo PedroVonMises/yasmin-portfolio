@@ -311,10 +311,9 @@
         "video": "/media/videos/podcast-reels-chamada.mp4"
       }
     ],
-    "reel": "/media/videos/trust.mp4",
-    "reelPoster": "/media/videos/trust.jpg",
-    "reelTitle": "Tr/st — ao vivo",
-    "reelLoop": "/media/videos/trust-loop.mp4"
+    "reel": "/media/videos/animation-yasmin.mp4",
+    "reelPoster": "/media/videos/animation-yasmin.jpg",
+    "reelTitle": "Yasmin em animação"
   },
   "podcasts": {
     "title": "Podcasts",
