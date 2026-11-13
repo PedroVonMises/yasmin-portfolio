@@ -57,11 +57,25 @@
     "subtitle": "captação e edição de shows, eventos e marcas — tudo pensado para o vertical.",
     "projects": [
       {
-        "title": "Festival do Camarão",
-        "tag": "Show · showreel",
+        "title": "Bruno Caliman — Onde o som encontra a terra",
+        "tag": "Show · aftermovie",
         "category": "Shows",
-        "image": "/media/videos/camarao-showreel.jpg",
-        "video": "/media/videos/camarao-showreel.mp4"
+        "image": "/media/videos/bruno-caliman-onde-o-som.jpg",
+        "video": "/media/videos/bruno-caliman-onde-o-som.mp4"
+      },
+      {
+        "title": "Devocional",
+        "tag": "Conteúdo · roteiro e edição",
+        "category": "Conteúdo",
+        "image": "/media/videos/devocional.jpg",
+        "video": "/media/videos/devocional.mp4"
+      },
+      {
+        "title": "Pavilhão",
+        "tag": "Evento · cobertura",
+        "category": "Eventos",
+        "image": "/media/videos/pavilhao.jpg",
+        "video": "/media/videos/pavilhao.mp4"
       },
       {
         "title": "André Lellis ao vivo",
@@ -76,13 +90,6 @@
         "category": "Eventos",
         "image": "/media/videos/tennis-resumo-geral.jpg",
         "video": "/media/videos/tennis-resumo-geral.mp4"
-      },
-      {
-        "title": "Chegada no hotel",
-        "tag": "Bastidores · vlog",
-        "category": "Eventos",
-        "image": "/media/videos/camarao-chegada-hotel.jpg",
-        "video": "/media/videos/camarao-chegada-hotel.mp4"
       },
       {
         "title": "Tennis Club — edit musical",
@@ -227,17 +234,7 @@
           {
             "icon": "camera",
             "title": "Captação",
-            "text": "Gravação de vídeos precificada por hora.",
-            "specs": [
-              {
-                "label": "Mobile",
-                "value": "iPhone 16 Pro Max"
-              },
-              {
-                "label": "Câmera",
-                "value": "Sony ZV-E10, lente Sigma 16mm"
-              }
-            ]
+            "text": "Captação de vídeos para marcas, eventos e shows com olhar estratégico em cada take: enquadramentos pensados para o vertical, cobertura completa do momento e material pronto para virar conteúdo que gera resultado. Precificada por hora."
           },
           {
             "icon": "clapper",
